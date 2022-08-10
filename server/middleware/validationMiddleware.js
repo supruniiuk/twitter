@@ -35,7 +35,22 @@ async function loginValidation(req, res, next) {
   }
 }
 
+
+async function tweetValidation(req, res, next) {
+  const schema = joi.object({
+    content: joi.string().max(280).min(1).required(),
+  })
+
+  try {
+    await schema.validateAsync(req.body);
+    next();
+  } catch (err) {
+    return next(ApiError.badRequest(`Registration field validation failed`));
+  }
+}
+
 module.exports = {
   registrationValidation,
-  loginValidation
+  loginValidation,
+  tweetValidation
 }
